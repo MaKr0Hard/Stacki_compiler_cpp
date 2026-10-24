@@ -2,18 +2,21 @@
 #define LEXER_H
 #include <iostream>
 #include <any>
+#include <vector>
 
 enum class Type {
     INT,
     FLOAT,
 };
 
-class Identifier {
+typedef struct {
     std::string name;
-};
+} Identifier;
 
 enum class Keyword {
     LET,
+    INT,
+    FLOAT,
 };
 
 enum class Operator {
@@ -25,8 +28,8 @@ enum class Operator {
 enum class Delimiter {
     LPARENTHESE,
     RPARENTHESE,
-    BEGIN,
-    END,
+    LBRACKET, //gonna use bracket instead of begin and end
+    RBRACKET,
 };
 
 class Constant {
@@ -52,12 +55,37 @@ public :
     }
 };
 
-class Lexer{
+enum class TokenType {
+    IDENTIFIER,
+    KEYWORD,
+    OPERATOR,
+    DELIMITER,
+    CONSTANT,
+};
+
+typedef struct {
+    TokenType tokenType;
+    //union { //TODO : do the union later...
+    struct {
+        Identifier identifier;
+        Keyword keyword;
+        Operator operat; //somehow operator was taken...
+        Delimiter delimiter;
+        Constant constant;
+    } value;
+    //} value;
+} token_struct;
+
+
+
+class Lexer {
 public :
-    explicit Lexer(const std::string input_file_name);
+    Lexer(const std::string input_file_name);
+    ~Lexer();
     void getLexedString();
 
 private:
-    std::string lexed_string = "";//More a vector
+    void check_identifier_or_keyword(std::string word);
+    std::vector<token_struct> lexed_tokens;
 };
 #endif

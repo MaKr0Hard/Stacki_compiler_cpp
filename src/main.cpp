@@ -7,7 +7,7 @@
 
 std::string program_name;
 
-
+// i'm reading lots of characters one after another, the c way is just faster than the cpp way
 
 int main(int argc, char** argv) { //TODO : Add multi-file support
     int opt;
@@ -33,6 +33,6 @@ int main(int argc, char** argv) { //TODO : Add multi-file support
     }
 
     if ((input != "") && (output != "")) {
-        Lexer lexer(input);
+        Lexer *lexer = new Lexer(input);
     }
 }
